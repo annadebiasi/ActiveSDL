@@ -41,7 +41,7 @@ extension ProxyManager : ChoseEventDelegate{
 // Sport -> Menu ... TDK -> Phone
 extension MainViewController : ClickedSportDelegate{
     func clickedSport(str: String) {
-    performSegue(withIdentifier: str, sender: nil)
+    performSegue(withIdentifier: str, sender: Int(1))
     }
 }
 

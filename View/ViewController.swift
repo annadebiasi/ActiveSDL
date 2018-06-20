@@ -25,6 +25,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var table: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        ProxyManager.sharedManager.clickedEventDelegate = self
         spinner.startAnimating()
         getJson(str: self.str!){ jsonData in
                     self.apiStructData = jsonData
@@ -49,12 +50,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         return(cell)
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        print("back")
-        super.viewWillDisappear(animated)
-        // The back button was pressed or interactive gesture used
-        ProxyManager.sharedManager.didGoBack()
-    }
+//    override func viewWillDisappear(_ animated: Bool) {
+//        print("back")
+//        super.viewWillDisappear(animated)
+//        // The back button was pressed or interactive gesture used
+ //       ProxyManager.sharedManager.didGoBack()
+//    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "labeling", sender: indexPath)
@@ -62,7 +63,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let indexPath = sender as? IndexPath{
-            print("INDEX PATH SEGUE  ", apiStructData.count, " ", (str?.lowercased())!, " ", indexPath.row)
+            print("INDEX PATH SEGUE ")
             if (segue.identifier == "labeling"){
                 let Labeling =  segue.destination as! Labeling
                 Labeling.apiStruct = apiStructData[indexPath.row]
@@ -70,7 +71,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 self.choseEventDelegate.choseEventPhone(activity: (str!), jsonData: apiStructData, identifier : indexPath.row)
             }
         } else if let num = sender as? Int{
-            print("INT SEGUE")
+            print("INT SEGUE", num)
             if (segue.identifier == "labeling"){
                 let Labeling = segue.destination as! Labeling
                 Labeling.apiStruct = apiStructData[num]

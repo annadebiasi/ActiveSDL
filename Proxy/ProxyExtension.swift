@@ -45,10 +45,10 @@ extension ProxyManager: SDLManagerDelegate {
         sdlManager.screenManager.beginUpdates()
         // nutrition button
         let button1 = SDLSoftButtonObject(name: "Nutrition", state: SDLSoftButtonState.init(stateName: "Normal", text: "Nutrition", image: UIImage(named: "nutrition")!), handler: { (press, event) in
-            self.clickedSportDelegate?.clickedSport(str:"nutrition")
             guard let buttonPress1 = press else { return }
             switch buttonPress1.buttonPressMode {
             case .short:
+                self.clickedSportDelegate?.clickedSport(str:"nutrition")
                 self.makeCustomMenu(activity: "Nutrition", num: 1)
             default:
                 print("Error! nutrition")
@@ -57,10 +57,11 @@ extension ProxyManager: SDLManagerDelegate {
         
         // soccer button
         let button2 = SDLSoftButtonObject(name: "Soccer", state: SDLSoftButtonState.init(stateName: "Normal", text: "Soccer", image: UIImage(named: "soccer")!), handler: { (press, event) in
-            self.clickedSportDelegate?.clickedSport(str: "soccer")
+            
             guard let buttonPress2 = press else { return }
             switch buttonPress2.buttonPressMode {
             case .short:
+                self.clickedSportDelegate?.clickedSport(str: "soccer")
                 self.makeCustomMenu(activity: "Soccer", num: 2)
             default:
                 print("Error! soccer")
@@ -69,10 +70,10 @@ extension ProxyManager: SDLManagerDelegate {
         
         // golf button
         let button3 = SDLSoftButtonObject(name: "Golf", state: SDLSoftButtonState.init(stateName: "Normal", text: "Golf", image: UIImage(named: "golf")!), handler: { (press, event) in
-            self.clickedSportDelegate?.clickedSport(str: "golf")
             guard let buttonPress3 = press else { return }
             switch buttonPress3.buttonPressMode {
             case .short:
+                self.clickedSportDelegate?.clickedSport(str: "golf")
                 self.makeCustomMenu(activity: "Golf" , num: 3)
             //  self.delegate?.didRequestMenuItems(event: "golf", callBack: {self.makeCustomMenu(activity: "Golf" , num: 3)})
             default:
@@ -148,7 +149,7 @@ extension ProxyManager: SDLManagerDelegate {
     }
     
     func createAlert(activity: String, jsonData: [APIStruct], identifier: Int){
-       print( "IDENT ", identifier , " ", jsonData.count)
+      // print( "IDENT ", identifier , " ", jsonData.count)
         let address = " \((jsonData[identifier]).place.addressLine1Txt), \((jsonData[identifier]).place.cityName) \((jsonData[identifier]).place.stateProvinceCode)"
         let alert = SDLAlert(alertText1: activity , alertText2: address , alertText3: "Sales Start Date: \(String(getProperDate(from:(jsonData[identifier]).salesStartDate) ?? "N/A")), End Date: \(String( getProperDate(from:(jsonData[identifier]).salesEndDate) ?? "N/A"))")
         
@@ -211,7 +212,6 @@ extension ProxyManager: SDLManagerDelegate {
                 }
                 // print("alert was dismissed successfully")
             }else{
-                
                 print("alert not successful")
                 print("ERROR  ", error!)
             }
