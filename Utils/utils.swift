@@ -9,6 +9,7 @@
 import Foundation
 import MapKit
 
+// retrieves and parses json data into an array
 func getJson(str: String, completion: @escaping ([APIStruct]) ->()) { //_ callBack: (()-> ())?
    // let access_key = "8auynm8hk7ejhq84pr64v77u"
     var apiStructData  = [APIStruct]()
@@ -39,6 +40,7 @@ func getJson(str: String, completion: @escaping ([APIStruct]) ->()) { //_ callBa
     task.resume()
 }
 
+// formats date
 func getProperDate(from date: String) -> String? {
     // date format is YYYY-MM-DD
     let value = date
@@ -51,6 +53,7 @@ func getProperDate(from date: String) -> String? {
     return properDate
 }
 
+// gets specific integer from event
 func switchMenu(str: String) -> Int {
     var num = 0
     switch str{

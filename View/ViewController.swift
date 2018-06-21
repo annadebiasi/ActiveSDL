@@ -15,18 +15,24 @@ protocol ChoseEventDelegate: class {
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
     
+    // initializes variables
     var choseEventDelegate : ChoseEventDelegate!
-    
     var apiStructData = [APIStruct]()
-    
     var str : String?
     
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     @IBOutlet weak var table: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
+       
+        // sets navigation controller settings
+        self.navigationItem.hidesBackButton = true
+        let newBackButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ViewController.back(sender:)))
+        self.navigationItem.leftBarButtonItem = newBackButton
+        
         ProxyManager.sharedManager.clickedEventDelegate = self
         spinner.startAnimating()
+        // retrieving json data
         getJson(str: self.str!){ jsonData in
                     self.apiStructData = jsonData
                     self.spinner.stopAnimating()
@@ -50,18 +56,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         return(cell)
     }
     
-//    override func viewWillDisappear(_ animated: Bool) {
-//        print("back")
-//        super.viewWillDisappear(animated)
-//        // The back button was pressed or interactive gesture used
- //       ProxyManager.sharedManager.didGoBack()
-//    }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "labeling", sender: indexPath)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // if the phone button is pressed
         if let indexPath = sender as? IndexPath{
             if (segue.identifier == "labeling"){
                 let Labeling =  segue.destination as! Labeling
@@ -70,6 +70,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 choseEventDelegate = ProxyManager.sharedManager
                 self.choseEventDelegate.choseEventPhone(activity: (str!), jsonData: apiStructData, identifier : indexPath.row)
             }
+        // if the TDK button is pressed
         } else if let num = sender as? Int{
             if (segue.identifier == "labeling"){
                 let Labeling = segue.destination as! Labeling
@@ -78,11 +79,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             }
         }
     }
-    func back(sender: UIBarButtonItem) {
+    
+// function called when back button is pressed on phone
+    @objc func back(sender: UIBarButtonItem) {
         print("Went back from viewcontroller")
-       choseEventDelegate.didGoBack()
-     
-
+        choseEventDelegate = ProxyManager.sharedManager
+        choseEventDelegate.didGoBack()
+        _ = navigationController?.popViewController(animated: true)
     }
 }
 

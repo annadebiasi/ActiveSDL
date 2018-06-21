@@ -19,6 +19,7 @@ class MainViewController: UIViewController{
         ProxyManager.sharedManager.clickedSportDelegate = self
     }
     
+// Segues into the ViewController
     override func prepare(for segue: UIStoryboardSegue, sender: Any?){
         if (segue.destination is ViewController){
             let vc = segue.destination as? ViewController

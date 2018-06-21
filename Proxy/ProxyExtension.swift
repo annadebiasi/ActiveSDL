@@ -33,7 +33,6 @@ extension ProxyManager: SDLManagerDelegate {
             sdlManager.send(request: display) { (request, response, error) in
                 if response?.resultCode == .success {
                     // The template has been set successfully
-                    print("The template has been set successfully")
                     self.setUp()
                 }
             }
@@ -268,17 +267,13 @@ extension ProxyManager: SDLManagerDelegate {
                 return
             }
         }
-        
         let sendLocation = SDLSendLocation(longitude: -97.380967, latitude: 42.877737, locationName: data.organization.organizationName, locationDescription: "Western United States", address: ["\(data.place.addressLine1Txt), \(data.place.cityName), \(data.place.stateProvinceCode)"], phoneNumber: nil, image: nil)
-        
         sdlManager.send(request: sendLocation) { (request, response, error) in
             guard let response = response as? SDLSendLocationResponse else { return }
-            
             if let error = error {
                 print("Encountered Error sending SendLocation: \(error)")
                 return
             }
-            
             if response.resultCode != .success {
                 if response.resultCode == .invalidData {
                     print("SendLocation was rejected. The request contained invalid data.")

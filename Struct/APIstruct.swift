@@ -10,28 +10,33 @@
 import Foundation
 
 struct APIStruct : Codable {
-    // let salesEndDate: String
+    // Place
     struct Place: Codable{
         let addressLine1Txt: String
         let stateProvinceCode: String
         let cityName: String
     }
+    // Description
     struct AssetDescriptions: Codable{
         let description: String
     }
+    // Prices
     struct AssetPrices: Codable{
         let priceAmt: Int
     }
-    let assetDescriptions: [AssetDescriptions]
-    let assetPrices: [AssetPrices]
+    // Organization
     struct Organization: Codable{
         let organizationName: String
         let primaryContactPhone: String
     }
+    
+    let assetDescriptions: [AssetDescriptions]
+    let assetPrices: [AssetPrices]
     let place: Place
     let organization: Organization
     let salesStartDate: String
     let salesEndDate: String
+    
     init?(withData soccerData: [String: Any])
     {
         guard let jsonData = try? JSONSerialization.data(withJSONObject: soccerData) else { return nil }
