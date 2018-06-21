@@ -68,3 +68,6 @@ func switchMenu(str: String) -> Int {
     }
     return(num)
 }
+
+
+

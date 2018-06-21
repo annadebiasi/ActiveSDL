@@ -89,8 +89,6 @@ extension ProxyManager: SDLManagerDelegate {
         sdlManager.screenManager.endUpdates { (error) in
             if error != nil {
                 print("Error Updating UI")
-            } else {
-                print("Update to UI was Successful")
             }
         }
     }
@@ -278,7 +276,7 @@ extension ProxyManager: SDLManagerDelegate {
                 if response.resultCode == .invalidData {
                     print("SendLocation was rejected. The request contained invalid data.")
                 } else if response.resultCode == .disallowed {
-                    print("Your app is not allowed to use SendLocation")
+                    print("Your app is not allowed to use SendLoUcation")
                 } else {
                     print("Some unknown error has occured!")
                 }
@@ -288,4 +286,11 @@ extension ProxyManager: SDLManagerDelegate {
             // Successfully sent!
         }
     }
+//    func deleteMenu(){
+//        let deleteRequest = SDLDeleteInteractionChoiceSet(id: UInt32(num))
+//        self.sdlManager.send(request: deleteRequest) { (request, response, error) in
+//            if response?.resultCode == .success {
+//            }
+//        }
+//    }
 }
