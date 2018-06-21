@@ -67,6 +67,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             if (segue.identifier == "labeling"){
                 let Labeling =  segue.destination as! Labeling
                 Labeling.apiStruct = apiStructData[indexPath.row]
+                Labeling.str = str
                 choseEventDelegate = ProxyManager.sharedManager
                 self.choseEventDelegate.choseEventPhone(activity: (str!), jsonData: apiStructData, identifier : indexPath.row)
             }
@@ -75,8 +76,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             if (segue.identifier == "labeling"){
                 let Labeling = segue.destination as! Labeling
                 Labeling.apiStruct = apiStructData[num]
+                Labeling.str = str
             }
         }
+    }
+    func back(sender: UIBarButtonItem) {
+       choseEventDelegate.didGoBack()
     }
 }
 

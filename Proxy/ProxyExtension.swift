@@ -101,7 +101,6 @@ extension ProxyManager: SDLManagerDelegate {
         getJson(str: activity) { jsonData in
             var organizationNames = [String]()
             var index = 0
-            print("JSON COUNT  ", jsonData.count)
             for _ in jsonData {
                 if(!organizationNames.contains((jsonData[index]).organization.organizationName)){
                     organizationNames.append((jsonData[index]).organization.organizationName)
@@ -128,17 +127,13 @@ extension ProxyManager: SDLManagerDelegate {
                             let deleteRequest = SDLDeleteInteractionChoiceSet(id: UInt32(num))
                             self.sdlManager.send(request: deleteRequest) { (request, response, error) in
                                 if response?.resultCode == .success {
-                                    print("The custom menu was deleted successfully")
                                 }
                             }
                         }else if (performInteractionResponse.resultCode == .success){
                             // The custom menu timed out before the user could select an item
-                           
-                            print("NUMMM   ", num)
                             let choiceId = performInteractionResponse.choiceID as! Int
                             // The user selected an item in the custom menu
                             self.clickedEventDelegate?.clickedEventTDK(num: choiceId)
-                            print("Choice ID  ", choiceId)
                             self.createAlert(activity: activity, jsonData: jsonData, identifier: choiceId)
                            
                         }
@@ -193,9 +188,9 @@ extension ProxyManager: SDLManagerDelegate {
         menu.type = .text
         menu.softButtonID = 16 as NSNumber & SDLInt
         menu.handler = { (buttonPress, buttonEvent) in
-            guard let press = buttonPress else { return }
+            guard let _ = buttonPress else { return }
             // create a custom action for the selected button
-            print("PRESS : ", press)
+            // print("PRESS : ", press)
         }
         
         alert.softButtons = [getDirections, callNumber, menu]

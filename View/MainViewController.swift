@@ -12,20 +12,18 @@ protocol ChoseSportDelegate: class {
     func didRequestMenuItems(event : String)
 }
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController{
     var choseSportDelegate = ProxyManager.sharedManager as ChoseSportDelegate
-    override func viewDidLoad() {
+    override func viewDidLoad(){
         super.viewDidLoad()
         ProxyManager.sharedManager.clickedSportDelegate = self
     }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?){
         if (segue.destination is ViewController){
             let vc = segue.destination as? ViewController
             vc?.str = "\(String(describing: segue.identifier!))"
-            if sender is Int{
-                print("sender is an integer ")
-            }else{
-                print("sender is not an integer")
+            if(!(sender is Int)){
                 self.choseSportDelegate.didRequestMenuItems(event: String(describing: segue.identifier!))
             }
         }

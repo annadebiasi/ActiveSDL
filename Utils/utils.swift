@@ -50,4 +50,18 @@ func getProperDate(from date: String) -> String? {
     let properDate = dateFormatter.string(from: date)
     return properDate
 }
-    
+
+func switchMenu(str: String) -> Int {
+    var num = 0
+    switch str{
+    case "nutrition":
+        num = 1
+    case "soccer":
+        num = 2
+    case "golf":
+        num = 3
+    default:
+        num = 0
+    }
+    return(num)
+}

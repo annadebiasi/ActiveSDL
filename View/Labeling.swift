@@ -8,7 +8,14 @@
 
 import UIKit
 
+protocol LabelingBack : class {
+    func wentBack(str: String)
+}
+
+
 class Labeling: UIViewController {
+    
+    var labelingBack : LabelingBack
     
     @IBOutlet weak var labelOne: UILabel!
     @IBOutlet weak var labelTwo: UILabel!
@@ -18,9 +25,14 @@ class Labeling: UIViewController {
     @IBOutlet weak var labelSeven: UILabel!
     
     var apiStruct: APIStruct?
+    var str : String?
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+       
+        
         
         let textSix = apiStruct!.assetDescriptions.isEmpty ? "Description Unavailable" : apiStruct!.assetDescriptions[0].description
         
@@ -48,6 +60,11 @@ class Labeling: UIViewController {
         labelSeven.numberOfLines = 0
         labelSeven.adjustsFontSizeToFitWidth = true
     }
+    func back(sender: UIBarButtonItem) {
+        labelingBack = ProxyManager.sharedManager
+        labelingBack.wentBack(str:str!)
+    }
+    
 }
 
 extension String {

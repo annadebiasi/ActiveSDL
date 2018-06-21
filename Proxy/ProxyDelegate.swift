@@ -12,17 +12,7 @@ import SmartDeviceLink
 // Sport -> Menu ... Phone -> TDK ... MainViewController
 extension ProxyManager : ChoseSportDelegate{
     func didRequestMenuItems(event: String){
-        var num = 0
-        switch event{
-        case "nutrition":
-            num = 1
-        case "soccer":
-            num = 2
-        case "golf":
-            num = 3
-        default:
-            num = 0
-        }
+        let num = switchMenu(str: event)
         makeCustomMenu(activity: event, num: num)
     }
 }
@@ -46,13 +36,19 @@ extension MainViewController : ClickedSportDelegate{
 }
 
 // Menu -> Detail ... TDK -> Phone
-extension ViewController: ClickedEventDelegate{
+extension ViewController : ClickedEventDelegate{
     func clickedEventTDK(num:Int) {
         performSegue(withIdentifier: "labeling", sender: num)
     }
 }
 
-
+// Detail -> Menu ... Phone -> TDK
+extension ProxyManager : LabelingBack{
+    func wentBack(str: String){
+        let num = switchMenu(str: str)
+        makeCustomMenu(activity: str, num: num)
+    }
+}
 
 
 
