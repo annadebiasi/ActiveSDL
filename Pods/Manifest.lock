@@ -1,0 +1,23 @@
+PODS:
+  - BiSON (1.1.1)
+  - SmartDeviceLink (5.2.0):
+    - BiSON (~> 1.1.1)
+    - SmartDeviceLink/Default (= 5.2.0)
+  - SmartDeviceLink/Default (5.2.0):
+    - BiSON (~> 1.1.1)
+
+DEPENDENCIES:
+  - SmartDeviceLink (~> 5.2)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - BiSON
+    - SmartDeviceLink
+
+SPEC CHECKSUMS:
+  BiSON: 2663348e6c64bfbf9cc82e4b0b3f7eed2cb3eb6b
+  SmartDeviceLink: 3e6d6f68cb7a20929e3db0f61a3009f626117fe8
+
+PODFILE CHECKSUM: 23e688876b7fe8afa3bcba900444318c1e830f8e
+
+COCOAPODS: 1.5.2
