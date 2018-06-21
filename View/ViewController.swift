@@ -63,7 +63,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let indexPath = sender as? IndexPath{
-            print("INDEX PATH SEGUE ")
             if (segue.identifier == "labeling"){
                 let Labeling =  segue.destination as! Labeling
                 Labeling.apiStruct = apiStructData[indexPath.row]
@@ -72,7 +71,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 self.choseEventDelegate.choseEventPhone(activity: (str!), jsonData: apiStructData, identifier : indexPath.row)
             }
         } else if let num = sender as? Int{
-            print("INT SEGUE", num)
             if (segue.identifier == "labeling"){
                 let Labeling = segue.destination as! Labeling
                 Labeling.apiStruct = apiStructData[num]
@@ -81,7 +79,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     func back(sender: UIBarButtonItem) {
+        print("Went back from viewcontroller")
        choseEventDelegate.didGoBack()
+     
+
     }
 }
 

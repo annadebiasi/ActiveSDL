@@ -15,7 +15,9 @@ protocol LabelingBack : class {
 
 class Labeling: UIViewController {
     
-    var labelingBack : LabelingBack
+    var labelingBack : LabelingBack!
+    var apiStruct: APIStruct?
+    var str : String?
     
     @IBOutlet weak var labelOne: UILabel!
     @IBOutlet weak var labelTwo: UILabel!
@@ -23,10 +25,6 @@ class Labeling: UIViewController {
     @IBOutlet weak var labelFive: UILabel!
     @IBOutlet weak var labelSix: UILabel!
     @IBOutlet weak var labelSeven: UILabel!
-    
-    var apiStruct: APIStruct?
-    var str : String?
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,6 +61,7 @@ class Labeling: UIViewController {
     func back(sender: UIBarButtonItem) {
         labelingBack = ProxyManager.sharedManager
         labelingBack.wentBack(str:str!)
+        print("Went back from labeling")
     }
     
 }
