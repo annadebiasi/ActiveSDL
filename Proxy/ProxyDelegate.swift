@@ -9,46 +9,40 @@
 import UIKit
 import SmartDeviceLink
 
-// Sport -> Menu ... Phone -> TDK ... MainViewController
-extension ProxyManager : ChoseSportDelegate{
-    func didRequestMenuItems(event: String){
-        let num = switchMenu(str: event)
-        makeCustomMenu(activity: event, num: num)
-    }
-}
-
-// Back Button -> Sport || Menu -> Detail ... Phone -> TDK ... ViewController
-extension ProxyManager : ChoseEventDelegate{
-//    hmiLevel(.none, didChangeToLevel: .full)
-    func didGoBack(){
-            setUp()
-    }
-    func choseEventPhone(activity: String, jsonData: [APIStruct], identifier: Int){
-        createAlert(activity: activity, jsonData: jsonData, identifier: identifier)
-    }
-}
-
 // Sport -> Menu ... TDK -> Phone
 extension MainViewController : ClickedSportDelegate{
     func clickedSport(str: String) {
-    performSegue(withIdentifier: str, sender: Int(1))
+        DispatchQueue.main.async { [weak self] in
+            self?.performSegue(withIdentifier: str, sender: Int(1))
+        }
     }
 }
 
 // Menu -> Detail ... TDK -> Phone
 extension ViewController : ClickedEventDelegate{
     func clickedEventTDK(num:Int) {
-        performSegue(withIdentifier: "labeling", sender: num)
+        DispatchQueue.main.async { [weak self] in
+            self?.performSegue(withIdentifier: "labeling", sender: num)
+        }
+    }
+}
+    
+extension Labeling : ClickedMenu{
+    func clickedMenuTDK(){
+         DispatchQueue.main.async { [weak self] in
+            _ = self?.navigationController?.popViewController(animated: true)
+            _ = self?.navigationController?.popViewController(animated: true)
+        }
     }
 }
 
 // Detail -> Menu ... Phone -> TDK
-extension ProxyManager : LabelingBack{
-    func wentBack(str: String){
-        let num = switchMenu(str: str)
-        makeCustomMenu(activity: str, num: num)
-    }
-}
+//extension ProxyManager : LabelingBack{
+//    func wentBack(str: String){
+//        let num = switchMenu(str: str)
+//        makeCustomMenu(activity: str, num: num)
+//    }
+//}
 
 
 

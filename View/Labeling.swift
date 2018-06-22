@@ -8,17 +8,14 @@
 
 import UIKit
 
-protocol LabelingBack : class {
-    func wentBack(str: String)
-}
 
 class Labeling: UIViewController {
     
     // initializing variables
-    var labelingBack : LabelingBack!
     var apiStruct: APIStruct?
     var str : String?
     
+    // setting outlets
     @IBOutlet weak var labelOne: UILabel!
     @IBOutlet weak var labelTwo: UILabel!
     @IBOutlet weak var labelFour: UILabel!
@@ -29,12 +26,7 @@ class Labeling: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // setting navigation controller settings
-        self.navigationItem.hidesBackButton = true
-        let newBackButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: #selector(Labeling.back(sender:)))
-        self.navigationItem.leftBarButtonItem = newBackButton
-
-        
+        ProxyManager.sharedManager.clickedMenu = self
         
         // setting label one
         labelOne.text = apiStruct!.organization.organizationName.isEmpty ? "Organization Unavailable" : apiStruct!.organization.organizationName
@@ -67,16 +59,6 @@ class Labeling: UIViewController {
         labelSeven.text = apiStruct!.salesStartDate.isEmpty ? "Sales Start Date Unavailable" : "Sales Start Date: \((getProperDate(from: apiStruct!.salesStartDate))!)  \n \(endLabel)"
         labelSeven.numberOfLines = 0
         labelSeven.adjustsFontSizeToFitWidth = true
-    }
-
-// called when the back button is pressed on phone
-    @objc func back(sender: UIBarButtonItem) {
-        print("Went back from labeling")
-        labelingBack = ProxyManager.sharedManager
-        labelingBack.wentBack(str: str!)
-        _ = navigationController?.popViewController(animated: true)
-        
-        
     }
 }
 

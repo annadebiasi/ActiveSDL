@@ -10,7 +10,7 @@ import Foundation
 import MapKit
 
 // retrieves and parses json data into an array
-func getJson(str: String, completion: @escaping ([APIStruct]) ->()) { //_ callBack: (()-> ())?
+func getJson(str: String, completion: @escaping ([APIStruct]) ->()) {
    // let access_key = "8auynm8hk7ejhq84pr64v77u"
     var apiStructData  = [APIStruct]()
     let session = URLSession(configuration: .ephemeral, delegate: nil, delegateQueue: OperationQueue.main)

@@ -7,8 +7,6 @@
 //
 
 import UIKit
-
-//Foundation
 import SmartDeviceLink
 
 
@@ -25,6 +23,7 @@ class ProxyManager: NSObject {
     
     var clickedSportDelegate: ClickedSportDelegate?
     var clickedEventDelegate: ClickedEventDelegate?
+    var clickedMenu: ClickedMenu?
     
     private override init() {
         super.init()
@@ -43,6 +42,7 @@ class ProxyManager: NSObject {
             let appIcon = SDLArtwork(image: appImage, name: "AppIcon", persistent: true, as: .PNG /* or .PNG */)
             lifecycleConfiguration.appIcon = appIcon
         }
+        
         // Short name for app
         lifecycleConfiguration.shortAppName = "EC"
        
@@ -57,7 +57,7 @@ class ProxyManager: NSObject {
     }
     
     func connect() {
-        // Start watching for a connection with a SDL Core
+        // Start watching for a connection with an SDL Core
         sdlManager.start { (success, error) in
             if success {
                 // Your app has successfully connected with the SDL Core

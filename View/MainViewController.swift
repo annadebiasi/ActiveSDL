@@ -8,12 +8,8 @@
 
 import UIKit
 
-protocol ChoseSportDelegate: class {
-    func didRequestMenuItems(event : String)
-}
-
 class MainViewController: UIViewController{
-    var choseSportDelegate = ProxyManager.sharedManager as ChoseSportDelegate
+    
     override func viewDidLoad(){
         super.viewDidLoad()
         ProxyManager.sharedManager.clickedSportDelegate = self
@@ -24,9 +20,6 @@ class MainViewController: UIViewController{
         if (segue.destination is ViewController){
             let vc = segue.destination as? ViewController
             vc?.str = "\(String(describing: segue.identifier!))"
-            if(!(sender is Int)){
-                self.choseSportDelegate.didRequestMenuItems(event: String(describing: segue.identifier!))
-            }
         }
     }
 }

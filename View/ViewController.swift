@@ -8,15 +8,9 @@
 
 import UIKit
 
-protocol ChoseEventDelegate: class {
-    func didGoBack()
-    func choseEventPhone(activity: String, jsonData:[APIStruct] , identifier : Int)
-}
-
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
     
     // initializes variables
-    var choseEventDelegate : ChoseEventDelegate!
     var apiStructData = [APIStruct]()
     var str : String?
     
@@ -26,9 +20,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         super.viewDidLoad()
        
         // sets navigation controller settings
-        self.navigationItem.hidesBackButton = true
-        let newBackButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ViewController.back(sender:)))
-        self.navigationItem.leftBarButtonItem = newBackButton
+//        self.navigationItem.hidesBackButton = true
+//        let newBackButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ViewController.back(sender:)))
+//        self.navigationItem.leftBarButtonItem = newBackButton
         
         ProxyManager.sharedManager.clickedEventDelegate = self
         spinner.startAnimating()
@@ -38,6 +32,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                     self.spinner.stopAnimating()
                     self.spinner.isHidden = true
                     self.table.reloadData()
+                    let num = switchMenu(str: String(describing: self.str!))
+                    ProxyManager.sharedManager.makeCustomMenu(activity: String(describing: self.str!), num: num, jsonData: self.apiStructData)
         }
     }
     
@@ -47,7 +43,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
         let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "cell0")
-        let key   = (apiStructData[indexPath.row]).organization.organizationName
+        let key = (apiStructData[indexPath.row]).organization.organizationName
         let value = (apiStructData[indexPath.row]).salesEndDate
         var str = String(value)
         str = (getProperDate(from: str))!
@@ -67,8 +63,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 let Labeling =  segue.destination as! Labeling
                 Labeling.apiStruct = apiStructData[indexPath.row]
                 Labeling.str = str
-                choseEventDelegate = ProxyManager.sharedManager
-                self.choseEventDelegate.choseEventPhone(activity: (str!), jsonData: apiStructData, identifier : indexPath.row)
+                ProxyManager.sharedManager.createAlert(activity: (str!), jsonData: apiStructData, identifier : indexPath.row)
             }
         // if the TDK button is pressed
         } else if let num = sender as? Int{
@@ -79,15 +74,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             }
         }
     }
-    
-// function called when back button is pressed on phone
-    @objc func back(sender: UIBarButtonItem) {
-        print("Went back from viewcontroller")
-        choseEventDelegate = ProxyManager.sharedManager
-        choseEventDelegate.didGoBack()
-        _ = navigationController?.popViewController(animated: true)
-    }
 }
+
+// function called when back button is pressed on phone
+//    @objc func back(sender: UIBarButtonItem) {
+//        print("Went back from viewcontroller")
+//        ProxyManager.sharedManager.goBack(str: str!)
+//        _ = navigationController?.popViewController(animated: true)
+//    }
+//}
 
 
 
