@@ -28,7 +28,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                     self.spinner.isHidden = true
                     self.table.reloadData()
                     let num = switchMenu(str: String(describing: self.str!))
-                    ProxyManager.sharedManager.makeCustomMenu(activity: String(describing: self.str!), num: num, jsonData: self.apiStructData)
+                    ProxyManager.sharedManager.makeCustomMenu(activity: String(describing: self.str!.capitalized), num: num, jsonData: self.apiStructData)
         }
     }
     

@@ -53,7 +53,7 @@ extension ProxyManager: SDLManagerDelegate {
             guard let buttonPress1 = press else { return }
             switch buttonPress1.buttonPressMode {
             case .short:
-                self.clickedSportDelegate?.clickedSport(str:"nutrition")
+                self.clickedSportDelegate?.clickedSport(str:"Nutrition")
             default:
                 print("Error! nutrition")
             }
@@ -65,7 +65,7 @@ extension ProxyManager: SDLManagerDelegate {
             guard let buttonPress2 = press else { return }
             switch buttonPress2.buttonPressMode {
             case .short:
-                self.clickedSportDelegate?.clickedSport(str: "soccer")
+                self.clickedSportDelegate?.clickedSport(str: "Soccer")
             default:
                 print("Error! soccer")
             }
@@ -76,7 +76,7 @@ extension ProxyManager: SDLManagerDelegate {
             guard let buttonPress3 = press else { return }
             switch buttonPress3.buttonPressMode {
             case .short:
-                self.clickedSportDelegate?.clickedSport(str: "golf")
+                self.clickedSportDelegate?.clickedSport(str: "Golf")
             default:
                 print("Error! golf")
             }

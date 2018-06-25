@@ -13,7 +13,7 @@ import SmartDeviceLink
 extension MainViewController : ClickedSportDelegate{
     func clickedSport(str: String) {
         DispatchQueue.main.async { [weak self] in
-            self?.performSegue(withIdentifier: str, sender: Int(1))
+            self?.performSegue(withIdentifier: str.lowercased(), sender: Int(1))
         }
     }
 }

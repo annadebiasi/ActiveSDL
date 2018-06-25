@@ -56,7 +56,8 @@ func getProperDate(from date: String) -> String? {
 // gets specific integer from event
 func switchMenu(str: String) -> Int {
     var num = 0
-    switch str{
+    let str1 = str.lowercased()
+    switch str1{
     case "nutrition":
         num = 1
     case "soccer":

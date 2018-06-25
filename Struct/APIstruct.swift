@@ -37,8 +37,7 @@ struct APIStruct : Codable {
     let salesStartDate: String
     let salesEndDate: String
     
-    init?(withData soccerData: [String: Any])
-    {
+    init?(withData soccerData: [String: Any]){
         guard let jsonData = try? JSONSerialization.data(withJSONObject: soccerData) else { return nil }
         guard let jsonString = String(data: jsonData, encoding: .utf8) else { return nil }
         guard let soccerData = jsonString.data(using: .utf8) else { return nil }
