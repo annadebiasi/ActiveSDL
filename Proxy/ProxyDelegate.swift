@@ -26,24 +26,13 @@ extension ViewController : ClickedEventDelegate{
         }
     }
 }
-    
+
+// Detail -> Sport ... TDK -> Phone
 extension Labeling : ClickedMenu{
     func clickedMenuTDK(){
-         DispatchQueue.main.async { [weak self] in
+        DispatchQueue.main.async { [weak self] in
             _ = self?.navigationController?.popViewController(animated: true)
             _ = self?.navigationController?.popViewController(animated: true)
         }
     }
 }
-
-// Detail -> Menu ... Phone -> TDK
-//extension ProxyManager : LabelingBack{
-//    func wentBack(str: String){
-//        let num = switchMenu(str: str)
-//        makeCustomMenu(activity: str, num: num)
-//    }
-//}
-
-
-
-

@@ -18,11 +18,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var table: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
-       
-        // sets navigation controller settings
-//        self.navigationItem.hidesBackButton = true
-//        let newBackButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ViewController.back(sender:)))
-//        self.navigationItem.leftBarButtonItem = newBackButton
         
         ProxyManager.sharedManager.clickedEventDelegate = self
         spinner.startAnimating()
@@ -76,13 +71,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
 }
 
-// function called when back button is pressed on phone
-//    @objc func back(sender: UIBarButtonItem) {
-//        print("Went back from viewcontroller")
-//        ProxyManager.sharedManager.goBack(str: str!)
-//        _ = navigationController?.popViewController(animated: true)
-//    }
-//}
 
 
 

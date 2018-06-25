@@ -24,7 +24,6 @@ protocol ClickedMenu : class {
     func clickedMenuTDK()
 }
 
-
 extension ProxyManager: SDLManagerDelegate {
     
     func managerDidDisconnect() {
@@ -187,7 +186,7 @@ extension ProxyManager: SDLManagerDelegate {
         menu.softButtonID = 16 as NSNumber & SDLInt
         menu.handler = { (buttonPress, buttonEvent) in
             guard let _ = buttonPress else { return }
-           self.clickedMenu?.clickedMenuTDK()
+            self.clickedMenu?.clickedMenuTDK()
         }
         
         alert.softButtons = [getDirections, callNumber, menu]
@@ -265,6 +264,7 @@ extension ProxyManager: SDLManagerDelegate {
                 return
             }
         }
+        
         let sendLocation = SDLSendLocation(longitude: -97.380967, latitude: 42.877737, locationName: data.organization.organizationName, locationDescription: "Western United States", address: ["\(data.place.addressLine1Txt), \(data.place.cityName), \(data.place.stateProvinceCode)"], phoneNumber: nil, image: nil)
         sdlManager.send(request: sendLocation) { (request, response, error) in
             guard let response = response as? SDLSendLocationResponse else { return }
@@ -282,19 +282,6 @@ extension ProxyManager: SDLManagerDelegate {
                 }
                 return
             }
-            
-            // Successfully sent!
         }
     }
-    func goBack(str: String){
-        let num = switchMenu(str : str)
-        let deleteRequest = SDLDeleteInteractionChoiceSet(id: UInt32(num))
-        self.sdlManager.send(request: deleteRequest) { (request, response, error) in
-            print(response?.resultCode as Any)
-            if response?.resultCode == .success {
-            }
-        }
-    }
-    
-    
 }

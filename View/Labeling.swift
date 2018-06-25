@@ -27,7 +27,7 @@ class Labeling: UIViewController {
         super.viewDidLoad()
         
         ProxyManager.sharedManager.clickedMenu = self
-        
+
         // setting label one
         labelOne.text = apiStruct!.organization.organizationName.isEmpty ? "Organization Unavailable" : apiStruct!.organization.organizationName
         labelOne.numberOfLines = 0
