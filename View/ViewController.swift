@@ -58,7 +58,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 let Labeling =  segue.destination as! Labeling
                 Labeling.apiStruct = apiStructData[indexPath.row]
                 Labeling.str = str
-                ProxyManager.sharedManager.createAlert(activity: (str!), jsonData: apiStructData, identifier : indexPath.row)
+                ProxyManager.sharedManager.createList(activity: (str!), jsonData: apiStructData, identifier : indexPath.row)
             }
         // if the TDK button is pressed
         } else if let num = sender as? Int{
