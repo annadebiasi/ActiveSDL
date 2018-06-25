@@ -65,7 +65,6 @@ extension ProxyManager: SDLManagerDelegate {
                 
                 // soccer button
                 let button2 = SDLSoftButtonObject(name: "Soccer", state: SDLSoftButtonState.init(stateName: "Normal", text: "Soccer", image: UIImage(named: "soccer")!), handler: { (press, event) in
-                    
                     guard let buttonPress2 = press else { return }
                     switch buttonPress2.buttonPressMode {
                     case .short:
@@ -172,9 +171,8 @@ extension ProxyManager: SDLManagerDelegate {
                     guard let buttonPress2 = press else { return }
                     switch buttonPress2.buttonPressMode {
                     case .short:
-                        print("success call")
-//                        let number = "7345760544"
-//                        self.callNumber(number : number)
+                        let number = "7345760544"
+                        self.callNumber(number : number)
                     default:
                         print("Error! call")
                     }
@@ -184,8 +182,7 @@ extension ProxyManager: SDLManagerDelegate {
                     guard let buttonPress2 = press else { return }
                     switch buttonPress2.buttonPressMode {
                     case .short:
-                        print("success directions")
-                        //self.getDirections(data : jsonData[identifier])
+                        self.getDirections(data : jsonData[identifier])
                     default:
                         print("Error! directions")
                     }
@@ -242,7 +239,7 @@ extension ProxyManager: SDLManagerDelegate {
                 print("Encountered Error sending DialNumber: \(error)")
                 return
             }
-            
+    
             if response.resultCode != .success {
                 if response.resultCode == .rejected {
                     print("DialNumber was rejected. Either the call was sent and cancelled or there is no device connected")
@@ -253,7 +250,6 @@ extension ProxyManager: SDLManagerDelegate {
                 }
                 return
             }
-            // Successfully sent!
         }
     }
     
