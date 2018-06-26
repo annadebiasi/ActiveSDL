@@ -18,18 +18,25 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var table: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         ProxyManager.sharedManager.clickedEventDelegate = self
-        spinner.startAnimating()
         // retrieving json data
-        getJson(str: self.str!){ jsonData in
-                    self.apiStructData = jsonData
-                    self.spinner.stopAnimating()
-                    self.spinner.isHidden = true
-                    self.table.reloadData()
-                    let num = switchMenu(str: String(describing: self.str!))
-                    ProxyManager.sharedManager.makeCustomMenu(activity: String(describing: self.str!.capitalized), num: num, jsonData: self.apiStructData)
+        if (UserDefaults.standard.object(forKey: str!) == nil) {
+            print("was cached")
+            apiStructData = UserDefaults.standard.array(forKey: str!) as! [APIStruct]
+        } else{
+            print("was not cached")
+            spinner.startAnimating()
+            getJson(str: self.str!){ jsonData in
+                        self.apiStructData = jsonData
+                        self.spinner.stopAnimating()
+                        self.spinner.isHidden = true
+                        self.table.reloadData()
+                        let defaults = UserDefaults.standard
+                        defaults.set(jsonData, forKey: self.str!)
+            }
         }
+        let num = switchMenu(str: String(describing: self.str!))
+        ProxyManager.sharedManager.makeCustomMenu(activity: String(describing: self.str!.capitalized), num: num, jsonData: self.apiStructData)
     }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
