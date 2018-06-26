@@ -19,22 +19,23 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func viewDidLoad() {
         super.viewDidLoad()
         ProxyManager.sharedManager.clickedEventDelegate = self
+        spinner.startAnimating()
         // retrieving json data
-        if (UserDefaults.standard.object(forKey: str!) == nil) {
-            print("was cached")
-            apiStructData = UserDefaults.standard.array(forKey: str!) as! [APIStruct]
+        if (UserDefaults.standard.data(forKey: str!) != nil) {
+            let data = UserDefaults.standard.data(forKey: str!)
+            self.apiStructData = try! JSONDecoder().decode([APIStruct].self, from: data!)
         } else{
-            print("was not cached")
-            spinner.startAnimating()
             getJson(str: self.str!){ jsonData in
                         self.apiStructData = jsonData
                         self.spinner.stopAnimating()
                         self.spinner.isHidden = true
                         self.table.reloadData()
-                        let defaults = UserDefaults.standard
-                        defaults.set(jsonData, forKey: self.str!)
+                        if let apiStructData = try? JSONEncoder().encode(jsonData) {
+                            UserDefaults.standard.set(apiStructData, forKey: self.str!)
+                }
             }
         }
+       
         let num = switchMenu(str: String(describing: self.str!))
         ProxyManager.sharedManager.makeCustomMenu(activity: String(describing: self.str!.capitalized), num: num, jsonData: self.apiStructData)
     }
