@@ -19,12 +19,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func viewDidLoad() {
         super.viewDidLoad()
         ProxyManager.sharedManager.clickedEventDelegate = self
-        spinner.startAnimating()
         // retrieving json data
         if (UserDefaults.standard.data(forKey: str!) != nil) {
             let data = UserDefaults.standard.data(forKey: str!)
             self.apiStructData = try! JSONDecoder().decode([APIStruct].self, from: data!)
+            self.spinner.isHidden = true
+            self.table.reloadData()
         } else{
+            spinner.startAnimating()
             getJson(str: self.str!){ jsonData in
                         self.apiStructData = jsonData
                         self.spinner.stopAnimating()
@@ -35,9 +37,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 }
             }
         }
-       
-        let num = switchMenu(str: String(describing: self.str!))
-        ProxyManager.sharedManager.makeCustomMenu(activity: String(describing: self.str!.capitalized), num: num, jsonData: self.apiStructData)
+        let num = switchMenu(str: String(describing: str!))
+        ProxyManager.sharedManager.makeCustomMenu(activity: (self.str!.capitalized), num: num, jsonData: (self.apiStructData))
     }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

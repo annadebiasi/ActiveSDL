@@ -93,15 +93,13 @@ extension ProxyManager: SDLManagerDelegate {
                 
                 // ends all screen updates
                 self.sdlManager.screenManager.endUpdates { (error) in
-                    if error != nil {
-                        print("Error Updating UI")
-                    }
+                   return
                 }
             }
         }
     }
     
-// Makes list of Events
+    // Makes list of Events
     func makeCustomMenu(activity: String, num : Int, jsonData: [APIStruct]){
         var organizationNames = [String]()
         for data in jsonData {
@@ -109,38 +107,62 @@ extension ProxyManager: SDLManagerDelegate {
                 organizationNames.append(data.organization.organizationName)
             }
         }
+        var count = 0
         var requestList = [SDLChoice]()
-        for (index, organizationName) in  organizationNames.enumerated() {
-            requestList.append(SDLChoice(id: (UInt16(index)), menuName: "\(organizationName)", vrCommands: ["\(organizationName)"]))
+        if(num == 3){
+            count = 50
+        }else if(num == 2){
+            count = 30
         }
-        let createRequest = SDLCreateInteractionChoiceSet(id: UInt32(num), choiceSet: requestList)
-        self.sdlManager.send(request: createRequest) { (request, response, error) in
-            if response?.resultCode == .success {
-                let performInteraction = SDLPerformInteraction(initialPrompt: "\(activity) Events", initialText: "\(activity) Events", interactionChoiceSetID: UInt16(num))
-                performInteraction.interactionMode = .manualOnly
-                performInteraction.interactionLayout = .listOnly
-                self.sdlManager.send(request: performInteraction) { (request, response, error) in
-                    let performInteractionResponse = response as! SDLPerformInteractionResponse
-                    // Wait for user's selection or for timeout
-                    if (performInteractionResponse.resultCode == SDLResult.timedOut || performInteractionResponse.resultCode == SDLResult.cancelRoute || performInteractionResponse.resultCode == .aborted ){
-                        let deleteRequest = SDLDeleteInteractionChoiceSet(id: UInt32(num))
-                        self.sdlManager.send(request: deleteRequest) { (request, response, error) in
-                            if response?.resultCode == .success {
-                            }
-                        }
-                    }else if (performInteractionResponse.resultCode == .success){
-                        // The custom menu timed out before the user could select an item
-                        let choiceId = performInteractionResponse.choiceID as! Int
-                        // The user selected an item in the custom menu
-                        self.clickedEventDelegate?.clickedEventTDK(num: choiceId)
-                       // self.createAlert(activity: activity, jsonData: jsonData, identifier: choiceId)
-                        self.createList(activity: activity, jsonData: jsonData, identifier: choiceId)
-                        let deleteRequest = SDLDeleteInteractionChoiceSet(id: UInt32(num))
-                        self.sdlManager.send(request: deleteRequest)  { (request, response, error) in
-                            if response?.resultCode == .success {
-                            }
+        for (index, organizationName) in  organizationNames.enumerated() {
+            requestList.append(SDLChoice(id: (UInt16(index + count)), menuName: "\(organizationName)", vrCommands: ["\(organizationName)"]))
+        }
+        var createRequest: SDLCreateInteractionChoiceSet
+        if(!list.keys.contains(num)){
+            createRequest = SDLCreateInteractionChoiceSet(id: UInt32(num), choiceSet: requestList)
+            list[num] = createRequest
+            self.sdlManager.send(request: createRequest) { (request, response, error) in
+                if response?.resultCode == .success {
+                    var performInteraction : SDLPerformInteraction
+                    if(!self.list2.keys.contains(num)){
+                        
+                        performInteraction = SDLPerformInteraction(initialPrompt: "\(activity) Events", initialText: "\(activity) Events", interactionChoiceSetID: UInt16(num))
+                        self.list2[num] = performInteraction
+                    }
+                    performInteraction = self.list2[num]!
+                    performInteraction.interactionMode = .manualOnly
+                    performInteraction.interactionLayout = .listOnly
+                    self.sdlManager.send(request: performInteraction) { (request, response, error) in
+                        let performInteractionResponse = response as! SDLPerformInteractionResponse
+                        // Wait for user's selection or for timeout
+                        if (performInteractionResponse.resultCode == SDLResult.timedOut || performInteractionResponse.resultCode == SDLResult.cancelRoute || performInteractionResponse.resultCode == .aborted ){
+                        }else if (performInteractionResponse.resultCode == .success){
+                            // The custom menu timed out before the user could select an item
+                            let choiceId = performInteractionResponse.choiceID as! Int
+                            // The user selected an item in the custom menu
+                            self.clickedEventDelegate?.clickedEventTDK(num: choiceId)
+                            // self.createAlert(activity: activity, jsonData: jsonData, identifier: choiceId)
+                            self.createList(activity: activity, jsonData: jsonData, identifier: choiceId)
                         }
                     }
+                }
+            }
+        }else{
+            var performInteraction : SDLPerformInteraction
+            performInteraction = self.list2[num]!
+            performInteraction.interactionMode = .manualOnly
+            performInteraction.interactionLayout = .listOnly
+            self.sdlManager.send(request: performInteraction) { (request, response, error) in
+                let performInteractionResponse = response as! SDLPerformInteractionResponse
+                // Wait for user's selection or for timeout
+                if (performInteractionResponse.resultCode == SDLResult.timedOut || performInteractionResponse.resultCode == SDLResult.cancelRoute || performInteractionResponse.resultCode == .aborted ){
+                }else if (performInteractionResponse.resultCode == .success){
+                    // The custom menu timed out before the user could select an item
+                    let choiceId = performInteractionResponse.choiceID as! Int
+                    // The user selected an item in the custom menu
+                    self.clickedEventDelegate?.clickedEventTDK(num: choiceId)
+                    // self.createAlert(activity: activity, jsonData: jsonData, identifier: choiceId)
+                    self.createList(activity: activity, jsonData: jsonData, identifier: choiceId)
                 }
             }
         }
@@ -203,7 +225,7 @@ extension ProxyManager: SDLManagerDelegate {
                 
                 self.sdlManager.screenManager.endUpdates { (error) in
                     if error != nil {
-                        print("Error Updating UI")
+                       return
                     } else {
                         print("Update to UI was Successful")
                     }
