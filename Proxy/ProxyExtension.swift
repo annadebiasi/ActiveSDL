@@ -59,7 +59,8 @@ extension ProxyManager: SDLManagerDelegate {
                     case .short:
                         self.clickedSportDelegate?.clickedSport(str:"Nutrition")
                     default:
-                        print("Error! nutrition")
+                        return
+                        
                     }
                 })
                 
@@ -70,7 +71,7 @@ extension ProxyManager: SDLManagerDelegate {
                     case .short:
                         self.clickedSportDelegate?.clickedSport(str: "Soccer")
                     default:
-                        print("Error! soccer")
+                        return
                     }
                 })
                 
@@ -81,7 +82,7 @@ extension ProxyManager: SDLManagerDelegate {
                     case .short:
                         self.clickedSportDelegate?.clickedSport(str: "Golf")
                     default:
-                        print("Error! golf")
+                        return
                     }
                 })
                 
@@ -107,12 +108,12 @@ extension ProxyManager: SDLManagerDelegate {
                 organizationNames.append(data.organization.organizationName)
             }
         }
-        var count = 0
+        var count = 25
         var requestList = [SDLChoice]()
         if(num == 3){
-            count = 50
+            count = 75
         }else if(num == 2){
-            count = 30
+            count = 50
         }
         for (index, organizationName) in  organizationNames.enumerated() {
             requestList.append(SDLChoice(id: (UInt16(index + count)), menuName: "\(organizationName)", vrCommands: ["\(organizationName)"]))
@@ -125,7 +126,7 @@ extension ProxyManager: SDLManagerDelegate {
                 if response?.resultCode == .success {
                     var performInteraction : SDLPerformInteraction
                     if(!self.list2.keys.contains(num)){
-                        
+                
                         performInteraction = SDLPerformInteraction(initialPrompt: "\(activity) Events", initialText: "\(activity) Events", interactionChoiceSetID: UInt16(num))
                         self.list2[num] = performInteraction
                     }
@@ -138,18 +139,22 @@ extension ProxyManager: SDLManagerDelegate {
                         if (performInteractionResponse.resultCode == SDLResult.timedOut || performInteractionResponse.resultCode == SDLResult.cancelRoute || performInteractionResponse.resultCode == .aborted ){
                         }else if (performInteractionResponse.resultCode == .success){
                             // The custom menu timed out before the user could select an item
-                            let choiceId = performInteractionResponse.choiceID as! Int
-                            // The user selected an item in the custom menu
-                            self.clickedEventDelegate?.clickedEventTDK(num: choiceId)
-                            // self.createAlert(activity: activity, jsonData: jsonData, identifier: choiceId)
-                            self.createList(activity: activity, jsonData: jsonData, identifier: choiceId)
+                            var choiceId = performInteractionResponse.choiceID as! Int
+                            print("CHOICE ", choiceId)
+                            print("ORG CNT ", organizationNames.count)
+                            choiceId -= count
+                            if(choiceId <= organizationNames.count){
+                                // The user selected an item in the custom menu
+                                self.clickedEventDelegate?.clickedEventTDK(num: choiceId)
+                                // self.createAlert(activity: activity, jsonData: jsonData, identifier: choiceId)
+                                self.createList(activity: activity, jsonData: jsonData, identifier: choiceId)
+                            }
                         }
                     }
                 }
             }
-        }else{
-            var performInteraction : SDLPerformInteraction
-            performInteraction = self.list2[num]!
+        }else if (self.list2.keys.contains(num)){
+            let performInteraction = self.list2[num]!
             performInteraction.interactionMode = .manualOnly
             performInteraction.interactionLayout = .listOnly
             self.sdlManager.send(request: performInteraction) { (request, response, error) in
@@ -158,11 +163,14 @@ extension ProxyManager: SDLManagerDelegate {
                 if (performInteractionResponse.resultCode == SDLResult.timedOut || performInteractionResponse.resultCode == SDLResult.cancelRoute || performInteractionResponse.resultCode == .aborted ){
                 }else if (performInteractionResponse.resultCode == .success){
                     // The custom menu timed out before the user could select an item
-                    let choiceId = performInteractionResponse.choiceID as! Int
-                    // The user selected an item in the custom menu
-                    self.clickedEventDelegate?.clickedEventTDK(num: choiceId)
-                    // self.createAlert(activity: activity, jsonData: jsonData, identifier: choiceId)
-                    self.createList(activity: activity, jsonData: jsonData, identifier: choiceId)
+                    var choiceId = performInteractionResponse.choiceID as! Int
+                    choiceId -= count
+                    if(choiceId <= organizationNames.count){
+                        // The user selected an item in the custom menu
+                        self.clickedEventDelegate?.clickedEventTDK(num: choiceId)
+                        // self.createAlert(activity: activity, jsonData: jsonData, identifier: choiceId)
+                        self.createList(activity: activity, jsonData: jsonData, identifier: choiceId)
+                    }
                 }
             }
         }
@@ -214,20 +222,18 @@ extension ProxyManager: SDLManagerDelegate {
                     guard let buttonPress2 = press else { return }
                     switch buttonPress2.buttonPressMode {
                     case .short:
-                        print("success back")
                         self.setUp()
                     default:
-                        print("Error! back")
+                        return
                     }
                 })
-                
                 self.sdlManager?.screenManager.softButtonObjects = [calButton, dirButton, bacButton]
                 
                 self.sdlManager.screenManager.endUpdates { (error) in
                     if error != nil {
                        return
                     } else {
-                        print("Update to UI was Successful")
+                        return
                     }
                 }
             }
@@ -236,13 +242,13 @@ extension ProxyManager: SDLManagerDelegate {
 
     
     func callNumber(number : String){
-        var isPhoneCallSupported = false
-        if let hmiCapabilities = self.sdlManager.registerResponse?.hmiCapabilities, let phoneCallsSupported = hmiCapabilities.phoneCall?.boolValue {
-            isPhoneCallSupported = phoneCallsSupported
-            if(!isPhoneCallSupported){
-                print("Phone call is not supported")
-            }
-        }
+//        var isPhoneCallSupported = false
+//        if let hmiCapabilities = self.sdlManager.registerResponse?.hmiCapabilities, let phoneCallsSupported = hmiCapabilities.phoneCall?.boolValue {
+//            isPhoneCallSupported = phoneCallsSupported
+//            if(!isPhoneCallSupported){
+//                print("Phone call is not supported")
+//            }
+//        }
         
         sdlManager.start { (success, error) in
             if !success {
@@ -368,12 +374,8 @@ extension ProxyManager: SDLManagerDelegate {
 //            let deleteRequest = SDLDeleteInteractionChoiceSet(id: UInt32(identifier))
 //            self.sdlManager.send(request: deleteRequest) { (request, response, error) in
 //                if response?.resultCode == .success {
-//                    // print("The custom menu was deleted successfully")
+//                      return
 //                }
 //            }
-//            // print("alert was dismissed successfully")
-//        }else{
-//            print("alert not successful")
-//            print("ERROR  ", error!)
 //        }
 //}

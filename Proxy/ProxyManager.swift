@@ -34,10 +34,10 @@ class ProxyManager: NSObject {
         SDLLockScreenConfiguration.disabled()
         
         // Used for USB Connection
-        // let lifecycleConfiguration = SDLLifecycleConfiguration(appName: appName, appId: appId)
+         let lifecycleConfiguration = SDLLifecycleConfiguration(appName: appName, appId: appId)
         
         // Used for TCP/IP Connection
-        let lifecycleConfiguration = SDLLifecycleConfiguration(appName: appName, appId: appId, ipAddress: "19.32.136.250", port: 12345)
+        //let lifecycleConfiguration = SDLLifecycleConfiguration(appName: appName, appId: appId, ipAddress: "19.32.136.250", port: 12345)
         
         // App icon image
         if let appImage = UIImage(named: "AppIcon") {
